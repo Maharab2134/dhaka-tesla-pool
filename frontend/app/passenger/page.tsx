@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   MapPin,
   Users,
@@ -304,6 +305,23 @@ export default function PassengerDashboard() {
                     </div>
                     <div className="text-xl font-extrabold text-white">
                       {formatPoishaToTaka(estimate.pooledFare.finalFarePoisha)}
+                    </div>
+                  </div>
+
+                  {/* Vehicle Fleet Preview */}
+                  <div className="flex items-center gap-2.5 pt-2 border-t border-slate-800/60 bg-slate-950/60 -mx-4 -mb-4 px-4 py-2.5 rounded-b-xl">
+                    <div className="relative h-8 w-12 rounded overflow-hidden border border-slate-700 shrink-0">
+                      <Image
+                        src="/images/dhaka-tesla-bullet.jpg"
+                        alt="Bullet"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="text-[11px] leading-tight">
+                      <span className="font-bold text-white">Tesla &ldquo;Bullet&rdquo;</span>
+                      <span className="text-slate-400"> (3 Seats) • Jashim</span>
+                      <div className="text-[10px] text-cyan-400 font-semibold">Active Banani Fleet</div>
                     </div>
                   </div>
                 </div>

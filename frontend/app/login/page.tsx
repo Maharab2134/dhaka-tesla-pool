@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Zap, Lock, Mail, ArrowRight, Car, User, AlertCircle } from "lucide-react";
 import { useAuth } from "../../lib/auth-context";
 
@@ -48,14 +49,23 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-65px)] items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-6">
         <div className="text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-slate-950 font-bold shadow-lg shadow-cyan-500/20 mb-4">
-            <Zap className="h-6 w-6 text-slate-950 fill-current" />
+          <div className="relative mx-auto mb-4 h-20 w-36 overflow-hidden rounded-2xl border border-slate-800 shadow-xl shadow-cyan-950/40">
+            <Image
+              src="/images/dhaka-tesla-bullet.jpg"
+              alt="Dhaka Tesla Bullet"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+            <div className="absolute bottom-1 left-2 right-2 text-center text-[9px] font-bold text-red-400 uppercase tracking-widest">
+              FLEET: BULLET (3 SEATS)
+            </div>
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-white">Welcome back</h2>
-          <p className="mt-2 text-sm text-slate-400">
-            Sign in to your Dhaka Tesla Pool account
+          <h2 className="text-2xl font-extrabold tracking-tight text-white">Welcome back</h2>
+          <p className="mt-1 text-xs text-slate-400">
+            Sign in to Dhaka Tesla Pool • Banani Road 11 Hub
           </p>
         </div>
 
