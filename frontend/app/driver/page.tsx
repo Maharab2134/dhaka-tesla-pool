@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Car,
   Users,
@@ -254,8 +255,30 @@ export default function DriverDashboard() {
               )}
             </div>
 
-            {/* Seat Meter */}
-            <div className="rounded-xl border border-slate-800/80 bg-slate-950/80 p-4">
+            {/* Vehicle Card & Seat Meter */}
+            <div className="rounded-xl border border-slate-800/80 bg-slate-950/80 p-4 space-y-4">
+              <div className="flex items-center gap-3.5 border-b border-slate-800/80 pb-3">
+                <div className="relative h-14 w-24 rounded-lg overflow-hidden border border-slate-700/80 shrink-0 shadow-md">
+                  <Image
+                    src="/images/dhaka-tesla-bullet.jpg"
+                    alt="Tesla Bullet"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-white">Tesla Model 3 &ldquo;Bullet&rdquo;</span>
+                    <span className="rounded bg-red-500/20 border border-red-500/30 px-1.5 py-0.5 text-[9px] font-bold text-red-400">
+                      3 SEATS
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-0.5">
+                    Assigned Driver: <strong>{user?.name || "Jashim"}</strong> • Banani Road 11 Hub
+                  </p>
+                </div>
+              </div>
+
               <SeatMeter
                 occupied={currentPool?.occupiedSeats || 0}
                 capacity={vehicle?.capacity || 3}
