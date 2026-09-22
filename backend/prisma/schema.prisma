@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  PASSENGER
+  DRIVER
+}
+
+enum RideRequestStatus {
+  REQUESTED
+  MATCHED
+  DRIVER_ARRIVED
+  STARTED
+  COMPLETED
+  CANCELLED
+}
+
+enum PoolStatus {
+  OPEN
+  FULL
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  TESLA_PAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+}
+
+model User {
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  passwordHash String       @map("password_hash")
+  role         UserRole
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  // Relationships
+  vehicle      Vehicle?
+  rideRequests RideRequest[]
+  poolMembers  PoolMember[]
+  payments     Payment[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id        String   @id @default(cuid())
+  driverId  String   @unique @map("driver_id")
+  driver    User     @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  name      String
+  capacity  Int      @default(3)
+  isOnline  Boolean  @default(false) @map("is_online")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relationships
+  pools Pool[]
+
+  @@map("vehicles")
+}
+
+model RideRequest {
+  id                  String            @id @default(cuid())
+  passengerId         String            @map("passenger_id")
+  passenger           User              @relation(fields: [passengerId], references: [id], onDelete: Cascade)
+  pickupArea          String            @map("pickup_area")
+  destinationArea     String            @map("destination_area")
+  pickupLat           Float?            @map("pickup_lat")
+  pickupLng           Float?            @map("pickup_lng")
+  destinationLat      Float?            @map("destination_lat")
+  destinationLng      Float?            @map("destination_lng")
+  seatsRequested      Int               @default(1) @map("seats_requested")
+  status              RideRequestStatus @default(REQUESTED)
+  estimatedFarePoisha Int               @map("estimated_fare_poisha")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+
+  // Relationships
+  poolMember    PoolMember?
+  fare          Fare?
+  payments      Payment[]
+  statusHistory RideStatusHistory[]
+
+  @@index([passengerId])
+  @@index([status])
+  @@map("ride_requests")
+}
+
+model Pool {
+  id        String     @id @default(cuid())
+  vehicleId String     @map("vehicle_id")
+  vehicle   Vehicle    @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  status    PoolStatus @default(OPEN)
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  // Relationships
+  members PoolMember[]
+
+  @@index([vehicleId])
+  @@index([status])
+  @@map("pools")
+}
+
+model PoolMember {
+  id            String      @id @default(cuid())
+  poolId        String      @map("pool_id")
+  pool          Pool        @relation(fields: [poolId], references: [id], onDelete: Cascade)
+  rideRequestId String      @unique @map("ride_request_id")
+  rideRequest   RideRequest @relation(fields: [rideRequestId], references: [id], onDelete: Cascade)
+  passengerId   String      @map("passenger_id")
+  passenger     User        @relation(fields: [passengerId], references: [id], onDelete: Cascade)
+  seats         Int         @default(1)
+  farePoisha    Int         @map("fare_poisha")
+  joinedAt      DateTime    @default(now()) @map("joined_at")
+
+  @@index([poolId])
+  @@index([passengerId])
+  @@map("pool_members")
+}
+
+model RideStatusHistory {
+  id            String             @id @default(cuid())
+  rideRequestId String             @map("ride_request_id")
+  rideRequest   RideRequest        @relation(fields: [rideRequestId], references: [id], onDelete: Cascade)
+  fromStatus    RideRequestStatus? @map("from_status")
+  toStatus      RideRequestStatus  @map("to_status")
+  changedBy     String             @map("changed_by")
+  createdAt     DateTime           @default(now()) @map("created_at")
+
+  @@index([rideRequestId])
+  @@map("ride_status_history")
+}
+
+model Fare {
+  id                   String      @id @default(cuid())
+  rideRequestId        String      @unique @map("ride_request_id")
+  rideRequest          RideRequest @relation(fields: [rideRequestId], references: [id], onDelete: Cascade)
+  baseFarePoisha       Int         @map("base_fare_poisha")
+  distanceChargePoisha Int         @map("distance_charge_poisha")
+  poolDiscountPoisha   Int         @default(0) @map("pool_discount_poisha")
+  finalFarePoisha      Int         @map("final_fare_poisha")
+  createdAt            DateTime    @default(now()) @map("created_at")
+
+  @@map("fares")
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  rideRequestId String        @map("ride_request_id")
+  rideRequest   RideRequest   @relation(fields: [rideRequestId], references: [id], onDelete: Cascade)
+  passengerId   String        @map("passenger_id")
+  passenger     User          @relation(fields: [passengerId], references: [id], onDelete: Cascade)
+  amountPoisha  Int           @map("amount_poisha")
+  method        PaymentMethod @default(CASH)
+  status        PaymentStatus @default(PENDING)
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  @@index([rideRequestId])
+  @@index([passengerId])
+  @@map("payments")
+}
