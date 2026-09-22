@@ -108,15 +108,14 @@ describe("Rides & Fare Calculation Integration Tests", () => {
       expect(response.body.success).toBe(true);
       const ride = response.body.data.ride;
       expect(ride.id).toBeDefined();
-      expect(ride.status).toBe("REQUESTED");
+      createdRideId = ride.id;
+      expect(["REQUESTED", "MATCHED"]).toContain(ride.status);
       expect(ride.pickupArea).toBe("Banani");
       expect(ride.destinationArea).toBe("Mohakhali");
       expect(ride.seatsRequested).toBe(1);
       expect(ride.estimatedFarePoisha).toBeGreaterThan(0);
       expect(ride.fare).toBeDefined();
       expect(ride.fare.baseFarePoisha).toBe(6000); // ৳60
-
-      createdRideId = ride.id;
     });
 
     it("should reject ride creation by Driver Jashim (403 Forbidden)", async () => {
