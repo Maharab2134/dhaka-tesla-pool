@@ -3,6 +3,7 @@ import { prisma } from "../../config/database.js";
 import { getDhakaArea } from "../../config/dhaka-geography.js";
 import { AppError } from "../../middleware/errorHandler.js";
 import { FareService } from "../fares/fare.service.js";
+import { PoolService } from "../pools/pool.service.js";
 import { CreateRideRequestInput, EstimateFareInput } from "./rides.validation.js";
 
 export class RidesService {
@@ -110,6 +111,35 @@ export class RidesService {
 
       return newRide;
     });
+
+    // Auto-match compatible active pool if available
+    try {
+      const matchResult = await PoolService.autoMatchRideRequest(ride.id);
+      if (matchResult) {
+        return prisma.rideRequest.findUniqueOrThrow({
+          where: { id: ride.id },
+          include: {
+            fare: true,
+            passenger: { select: { id: true, name: true, email: true } },
+            poolMember: {
+              include: {
+                pool: {
+                  include: {
+                    vehicle: {
+                      include: {
+                        driver: { select: { id: true, name: true } },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+    } catch (err) {
+      console.warn("Auto-match skipped or encountered error:", err);
+    }
 
     return ride;
   }

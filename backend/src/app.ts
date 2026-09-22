@@ -5,6 +5,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { sendSuccess } from "./utils/response.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { ridesRoutes } from "./modules/rides/rides.routes.js";
+import { poolRoutes } from "./modules/pools/pool.routes.js";
 
 export const createApp = (): Express => {
   const app = express();
@@ -30,6 +31,7 @@ export const createApp = (): Express => {
   // API routes
   app.use("/api/auth", authRoutes);
   app.use("/api/rides", ridesRoutes);
+  app.use("/api/pools", poolRoutes);
 
   // Global error handler
   app.use(errorHandler);
