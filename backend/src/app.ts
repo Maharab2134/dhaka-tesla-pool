@@ -3,6 +3,7 @@ import cors from "cors";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { sendSuccess } from "./utils/response.js";
+import { authRoutes } from "./modules/auth/auth.routes.js";
 
 export const createApp = (): Express => {
   const app = express();
@@ -24,6 +25,9 @@ export const createApp = (): Express => {
       timestamp: new Date().toISOString(),
     });
   });
+
+  // Authentication routes
+  app.use("/api/auth", authRoutes);
 
   // Global error handler
   app.use(errorHandler);
