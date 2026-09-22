@@ -6,6 +6,7 @@ import { sendSuccess } from "./utils/response.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { ridesRoutes } from "./modules/rides/rides.routes.js";
 import { poolRoutes } from "./modules/pools/pool.routes.js";
+import { driverRoutes } from "./modules/drivers/driver.routes.js";
 
 export const createApp = (): Express => {
   const app = express();
@@ -32,6 +33,7 @@ export const createApp = (): Express => {
   app.use("/api/auth", authRoutes);
   app.use("/api/rides", ridesRoutes);
   app.use("/api/pools", poolRoutes);
+  app.use("/api/driver", driverRoutes);
 
   // Global error handler
   app.use(errorHandler);

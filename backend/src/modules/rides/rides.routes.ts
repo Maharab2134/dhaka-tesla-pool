@@ -13,5 +13,6 @@ router.get("/my-rides", authenticate, requirePassenger, RidesController.getMyRid
 
 // Specific ride details with authorization
 router.get("/:id", authenticate, RidesController.getRideById);
+router.post("/:id/cancel", authenticate, requirePassenger, RidesController.cancelRide);
 
 export const ridesRoutes = router;
