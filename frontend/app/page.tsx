@@ -11,6 +11,7 @@ import {
   TrendingDown,
   Lock,
   Compass,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -69,10 +70,11 @@ export default function HomePage() {
                 </Link>
 
                 <Link
-                  href="/login"
-                  className="flex items-center gap-1.5 rounded-xl border border-cyan-800/50 bg-cyan-950/30 px-5 py-3.5 text-sm font-semibold text-cyan-300 hover:bg-cyan-900/40 transition-all"
+                  href="/admin"
+                  className="flex items-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-950/30 px-5 py-3.5 text-sm font-bold text-amber-300 hover:bg-amber-900/40 transition-all shadow-md hover:-translate-y-0.5"
                 >
-                  <span>1-Click Evaluator Demo</span>
+                  <ShieldCheck className="h-4 w-4" />
+                  <span>Admin / PRD Matrix</span>
                 </Link>
               </div>
             </div>
