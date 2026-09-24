@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Zap, LogOut, Car, Sparkles, Navigation } from "lucide-react";
+import { Zap, LogOut, Car, Sparkles, Navigation, ShieldCheck } from "lucide-react";
 import { useAuth } from "../lib/auth-context";
 
 export function Navbar() {
@@ -66,7 +66,19 @@ export function Navbar() {
             }`}
           >
             <Car className="h-3 w-3" />
-            <span>Driver (Jashim)</span>
+            <span>Driver</span>
+          </Link>
+
+          <Link
+            href="/admin"
+            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition flex items-center gap-1.5 ${
+              pathname === "/admin"
+                ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-400/30"
+                : "text-amber-400 hover:text-amber-300 hover:bg-slate-800/60"
+            }`}
+          >
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>Admin / PRD</span>
           </Link>
         </nav>
 
