@@ -4,6 +4,7 @@ FROM node:22-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package*.json ./
+COPY prisma ./prisma/
 RUN npm ci
 
 # Rebuild the source code only when needed
