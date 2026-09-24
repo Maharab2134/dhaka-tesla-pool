@@ -35,3 +35,9 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Internal Planning & Development Rules
+Dhaka_Tesla_Pool_Implementation_Plan.md
+Dhaka_Tesla_Pool_Development_Git_Testing_Rules.md
+*.pdf
+.agents/
