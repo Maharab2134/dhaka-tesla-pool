@@ -14,6 +14,26 @@ describe("Rides & Fare Calculation Integration Tests", () => {
   beforeAll(async () => {
     await prisma.$connect();
 
+    // Clean up any existing rides for test passengers to guarantee isolation
+    const testUsers = await prisma.user.findMany({
+      where: { email: { in: ["nusrat@tesla.dhaka", "rafiq@tesla.dhaka", "shirin@tesla.dhaka"] } },
+    });
+    const testUserIds = testUsers.map((u) => u.id);
+    if (testUserIds.length > 0) {
+      const existingRides = await prisma.rideRequest.findMany({
+        where: { passengerId: { in: testUserIds } },
+        select: { id: true },
+      });
+      const rideIds = existingRides.map((r) => r.id);
+      if (rideIds.length > 0) {
+        await prisma.payment.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+        await prisma.rideStatusHistory.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+        await prisma.poolMember.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+        await prisma.fare.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+        await prisma.rideRequest.deleteMany({ where: { id: { in: rideIds } } });
+      }
+    }
+
     // Login Nusrat
     const nusratLogin = await request(app).post("/api/auth/login").send({
       email: "nusrat@tesla.dhaka",
@@ -116,6 +136,21 @@ describe("Rides & Fare Calculation Integration Tests", () => {
       expect(ride.estimatedFarePoisha).toBeGreaterThan(0);
       expect(ride.fare).toBeDefined();
       expect(ride.fare.baseFarePoisha).toBe(6000); // ৳60
+    });
+
+    it("should reject a second ride request if passenger already has an active ride in progress (400 ACTIVE_RIDE_EXISTS)", async () => {
+      const response = await request(app)
+        .post("/api/rides")
+        .set("Authorization", `Bearer ${nusratToken}`)
+        .send({
+          pickupArea: "Banani",
+          destinationArea: "Gulshan 1",
+          seatsRequested: 1,
+        });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe("ACTIVE_RIDE_EXISTS");
     });
 
     it("should reject ride creation by Driver Jashim (403 Forbidden)", async () => {

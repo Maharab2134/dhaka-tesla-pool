@@ -29,6 +29,20 @@ describe("Ride Lifecycle & Driver Flow Integration Tests", () => {
     });
     nusratToken = nusratLogin.body.data.token;
     nusratId = nusratLogin.body.data.user.id;
+
+    // Clean up any existing rides for Nusrat before starting
+    const existingRides = await prisma.rideRequest.findMany({
+      where: { passengerId: nusratId },
+      select: { id: true },
+    });
+    const rideIds = existingRides.map((r) => r.id);
+    if (rideIds.length > 0) {
+      await prisma.payment.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+      await prisma.rideStatusHistory.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+      await prisma.poolMember.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+      await prisma.fare.deleteMany({ where: { rideRequestId: { in: rideIds } } });
+      await prisma.rideRequest.deleteMany({ where: { id: { in: rideIds } } });
+    }
   });
 
   afterAll(async () => {

@@ -63,6 +63,29 @@ export class RidesService {
       throw new AppError("Invalid pickup or destination area", 400, "INVALID_AREA");
     }
 
+    // Ensure the passenger does not already have an active ride request in progress
+    const activeRide = await prisma.rideRequest.findFirst({
+      where: {
+        passengerId,
+        status: {
+          in: [
+            RideRequestStatus.REQUESTED,
+            RideRequestStatus.MATCHED,
+            RideRequestStatus.DRIVER_ARRIVED,
+            RideRequestStatus.STARTED,
+          ],
+        },
+      },
+    });
+
+    if (activeRide) {
+      throw new AppError(
+        "You already have an active ride request in progress. Please complete or cancel it before requesting a new seat.",
+        400,
+        "ACTIVE_RIDE_EXISTS"
+      );
+    }
+
     // Default ride requests are pooled to provide Tesla Pool discount
     const fareCalc = FareService.calculateFareBetweenAreas(
       pickup,
