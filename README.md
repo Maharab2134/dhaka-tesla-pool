@@ -6,8 +6,26 @@ Dhaka Tesla Pool is a high-reliability, full-stack ride-sharing MVP designed spe
 
 ---
 
+## 🎥 Project Walkthrough Video
+
+[![Watch Walkthrough Video](https://img.shields.io/badge/▶%20Watch%20Walkthrough-Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/1JsHdWH--jeZjJDafSt56gyqeA0noKc3Z/view?usp=drive_link)
+[![Live Backend API](https://img.shields.io/badge/Live%20API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://dhaka-tesla-pool.onrender.com)
+[![Database](https://img.shields.io/badge/PostgreSQL%2016-Neon.tech-00E599?style=for-the-badge&logo=postgresql&logoColor=white)](https://neon.tech)
+
+📺 **Video Link**: [https://drive.google.com/file/d/1JsHdWH--jeZjJDafSt56gyqeA0noKc3Z/view?usp=drive_link](https://drive.google.com/file/d/1JsHdWH--jeZjJDafSt56gyqeA0noKc3Z/view?usp=drive_link)
+
+### Video Outline & Timestamps (6 Minutes):
+| Timestamp | Segment | Key Topics Covered |
+| :--- | :--- | :--- |
+| **0:00 – 1:00** | **Problem, Users & Core Idea** | Dhaka traffic gridlock, high-density Banani corridor, commuter personas (Nusrat, Rafiq, Shirin), EV driver Jashim with 3-passenger Tesla "Bullet", and automatic 25% pool discount. |
+| **1:00 – 3:00** | **Architecture, Decisions & Trade-offs** | Modular Monolith (Express.js + Next.js 15), PostgreSQL 16 row-level pessimistic locking (`SELECT ... FOR UPDATE`), exact integer poisha calculations, FSM ride lifecycle, Architecture Diagram & ERD. |
+| **3:00 – 6:00** | **Product Tour, Edge Cases & Deployment** | Story Simulator walkthrough, 1st & 2nd passenger auto-pooling, 3rd seat saturation, 4th passenger 409 rejection edge case, payment ledger settlement, and live Render + Neon cloud deployment. |
+
+---
+
 ## Table of Contents
 
+0. [Project Walkthrough Video](#-project-walkthrough-video)
 1. [Project Summary](#1-project-summary)
 2. [Problem Statement & Dhaka Traffic Context](#2-problem-statement--dhaka-traffic-context)
 3. [Core Features](#3-core-features)
@@ -637,6 +655,8 @@ In compliance with project guidelines, AI was utilized as an engineering acceler
 ---
 
 ## 23. Final Demo Scenario Walkthrough
+
+> 💡 **Video Walkthrough**: Watch this complete 8-step workflow demonstrated in the **[Project Walkthrough Video (Google Drive)](https://drive.google.com/file/d/1JsHdWH--jeZjJDafSt56gyqeA0noKc3Z/view?usp=drive_link)**.
 
 Follow this scripted 8-step walkthrough to evaluate the complete end-to-end pooling workflow:
 
