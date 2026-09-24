@@ -5,6 +5,9 @@ echo "=========================================="
 echo " Dhaka Tesla Pool API — Container Startup "
 echo "=========================================="
 
+echo "==> Generating Prisma client..."
+npx prisma generate
+
 echo "==> Deploying Prisma migrations..."
 npx prisma migrate deploy
 
