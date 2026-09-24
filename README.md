@@ -129,7 +129,7 @@ flowchart TD
 
     subgraph Persistence["Data & Concurrency Layer (Port 5432)"]
         Prisma["Prisma ORM 6.x"]
-        PessimisticLock["Postgres Row Lock<br/>(`SELECT ... FOR UPDATE`)"]
+        PessimisticLock["Postgres Row Lock<br/>(SELECT ... FOR UPDATE)"]
         Postgres[("PostgreSQL 16 Database<br/>8 Relational Models • Foreign Keys • Cascades")]
     end
 
@@ -575,6 +575,12 @@ The web application at `/login` provides **1-Click Demo Login Buttons** that ins
 
 ## 19. Deployment Guide
 
+### Live Cloud Deployment
+- **Backend API (Render)**: [https://dhaka-tesla-pool.onrender.com](https://dhaka-tesla-pool.onrender.com)
+- **API Health Check**: [https://dhaka-tesla-pool.onrender.com/api/health](https://dhaka-tesla-pool.onrender.com/api/health)
+- **Managed Database**: [Neon.tech](https://neon.tech) PostgreSQL 16 (AWS US-East-2)
+- **Frontend Web**: [Vercel](https://vercel.com) Edge Deployment
+
 ### Recommended Free-Tier Architecture
 - **Database**: Free Managed PostgreSQL instance on [Neon.tech](https://neon.tech) or [Supabase](https://supabase.com).
 - **Backend API**: Free web service container on [Render](https://render.com) or [Railway](https://railway.app).
@@ -584,7 +590,7 @@ The web application at `/login` provides **1-Click Demo Login Buttons** that ins
 For VM deployment (DigitalOcean Droplet, AWS EC2, or local evaluation server):
 ```bash
 # 1. Clone repository
-git clone https://github.com/your-username/dhaka-tesla-pool.git
+git clone https://github.com/Maharab2134/dhaka-tesla-pool.git
 cd dhaka-tesla-pool
 
 # 2. Configure production secrets in .env

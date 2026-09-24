@@ -19,8 +19,8 @@ flowchart TD
 
     subgraph Gateway["API & Security Layer"]
         API_GATE["Express 4 REST API Server (Port 5000)"]
-        AUTH_MID["JWT Auth Middleware (`authenticate`)"]
-        RBAC_MID["Role Guard Middleware (`requirePassenger` / `requireDriver`)"]
+        AUTH_MID["JWT Auth Middleware (authenticate)"]
+        RBAC_MID["Role Guard Middleware (requirePassenger / requireDriver)"]
         ZOD_VAL["Zod Request Validation Schemas"]
     end
 
@@ -33,7 +33,7 @@ flowchart TD
 
     subgraph Data["Persistence & Concurrency Layer"]
         PRISMA["Prisma ORM Client 6.x"]
-        LOCK["PostgreSQL Row-Level Pessimistic Lock<br/>(`SELECT ... FOR UPDATE`)"]
+        LOCK["PostgreSQL Row-Level Pessimistic Lock<br/>(SELECT ... FOR UPDATE)"]
         POSTGRES[("PostgreSQL 16 Engine<br/>ACID Transactions • Relational Constraints")]
     end
 
