@@ -138,21 +138,37 @@ export default function DriverDashboard() {
   if (!user || user.role !== "DRIVER") {
     return (
       <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-8 backdrop-blur">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-950 text-cyan-400 mb-4 border border-cyan-800/40">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-8 backdrop-blur shadow-2xl">
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-950/40 text-amber-400 mb-4 border border-amber-800/40">
             <Car className="h-7 w-7" />
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">Driver Portal (Jashim)</h2>
-          <p className="text-xs text-slate-400 mb-6 leading-relaxed">
-            You are currently not logged in as a driver. Log in as driver **Jashim** to operate vehicle
-            **Bullet** (Capacity: 3) and manage passenger pooling.
+          <h2 className="text-xl font-bold text-white mb-2">Driver Cockpit Access</h2>
+          <p className="text-xs text-slate-300 mb-6 leading-relaxed">
+            {user ? (
+              <>
+                You are currently signed in as Passenger <strong className="text-cyan-400">{user.name}</strong> ({user.email}).
+                The driver cockpit is reserved for <strong className="text-amber-400">Jashim</strong> to operate vehicle <strong className="text-white">&ldquo;Bullet&rdquo;</strong> (Capacity: 3 seats).
+              </>
+            ) : (
+              <>
+                Sign in as driver <strong className="text-amber-400">Jashim</strong> to operate vehicle <strong className="text-white">&ldquo;Bullet&rdquo;</strong> (Capacity: 3 seats) and manage passenger pooling across the Banani corridor.
+              </>
+            )}
           </p>
-          <button
-            onClick={handleSwitchToJashim}
-            className="rounded-xl bg-cyan-500 px-6 py-3 text-xs font-bold text-slate-950 hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/25"
-          >
-            1-Click Log In as Jashim (Driver)
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={handleSwitchToJashim}
+              className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 px-6 py-3 text-xs font-bold text-slate-950 hover:from-amber-300 hover:to-amber-400 transition shadow-lg shadow-amber-500/20"
+            >
+              1-Click Switch to Jashim (Driver)
+            </button>
+            <Link
+              href="/passenger"
+              className="w-full sm:w-auto rounded-xl border border-slate-800 bg-slate-900 px-5 py-3 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition"
+            >
+              Back to Passenger Dashboard
+            </Link>
+          </div>
         </div>
       </div>
     );
